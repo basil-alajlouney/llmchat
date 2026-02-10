@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "llmchat"
+version = "0.01.0"
+description = "My local LLM chat project"
+authors = [
+    { name="Basil Al-Ajlouney", email="basil.ajlouney24@gmail.com" } 
+]
+dependencies = [
+    "ollama"
+]
+
+[project.scripts]
+llmchat = "llmchat.main:main"

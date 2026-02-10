@@ -1,0 +1,6 @@
+Metadata-Version: 2.4
+Name: llmchat
+Version: 0.1.0
+Summary: My local LLM chat project
+Author-email: Basil Al-Ajlouney <basil.ajlouney24@gmail.com>
+Requires-Dist: ollama
