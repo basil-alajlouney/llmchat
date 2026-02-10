@@ -50,7 +50,6 @@ llmchat -m llama3.1 -s "You are a concise assistant." -c cyan
 
 * Python 3.10+
 * [Ollama Python library](https://pypi.org/project/ollama/)
-* Optional: `rich` and `colorama` for enhanced output
 
 ## Contributing
 
