@@ -2,6 +2,7 @@ from time import sleep
 import ollama
 import argparse
 import sys
+import importlib.metadata
 
 supported_colors = {
     "black": 30,
@@ -44,9 +45,9 @@ def main():
   parser.add_argument("-c", "--color", type=str, default="green", help="pick wish color you want to you, check --list-colors for supported colors, default: green")
   parser.add_argument("-s", "--system", type=str, default="You are a concise assistant.", help="system prompt for the model, default: You are a concise assistant")
   parser.add_argument("-qr", "--quick-response",action="store_true",default=False, help="discards sleep which is used to make responses more appealing")
+  parser.add_arguemtn("-v", "--version", action="store_true", defult=False, help="provide the version number")
   parser.add_argument("--list-models",action="store_true",default=False, help="list all available models")
   parser.add_argument("--list-colors",action="store_true",default=False, help="list all available colors")
-
   args = parser.parse_args()
 
   if args.list_colors:
@@ -57,6 +58,10 @@ def main():
   if args.list_models:
     for model in ollama.list().models:
       print(model.model)
+    return
+
+  if args.version:
+    print(importlib.metadata.version("llmchat"))
     return
 
   validate_colors(args.color)
