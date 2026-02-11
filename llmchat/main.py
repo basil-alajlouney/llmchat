@@ -80,6 +80,7 @@ def main():
       return
 
     if user_message == "exit":
+      print("Ending chat...")
       break
 
     add_message(messages, user_message, "user")
