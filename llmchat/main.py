@@ -41,23 +41,34 @@ def clear_input_line():
 def main():
 
   parser = argparse.ArgumentParser(description="arguments for cmd-based chatbot")
+  subparsers = parser.add_subparsers(dest="command", required=False)
+
+  models_parser = subparsers.add_parser("list-models", help="list all available models")
+  models_parser.add_argument("-s", "--search", type=str, default="")
+  colors_parser = subparsers.add_parser("list-colors", help="list all available colors")
+  colors_parser.add_argument("-s", "--search", type=str, default="")
+
+
   parser.add_argument("-m", "--model", type=str, default="llama3.1:latest", help="name the model you want to use, defualt: llama3.1:latest")
   parser.add_argument("-c", "--color", type=str, default="green", help="pick wish color you want to you, check --list-colors for supported colors, default: green")
   parser.add_argument("-s", "--system", type=str, default="You are a concise assistant.", help="system prompt for the model, default: You are a concise assistant")
   parser.add_argument("-qr", "--quick-response",action="store_true",default=False, help="discards sleep which is used to make responses more appealing")
   parser.add_argument("-v", "--version", action="store_true", default=False, help="provide the version number")
-  parser.add_argument("--list-models",action="store_true",default=False, help="list all available models")
-  parser.add_argument("--list-colors",action="store_true",default=False, help="list all available colors")
   args = parser.parse_args()
+  
+  if args.command is None:
+    args.command = "chat"
 
-  if args.list_colors:
+  if args.command == "list-colors":
     for color in supported_colors.keys():
-      print(color)
+      if args.search in color:
+        print(color)
     return
 
-  if args.list_models:
+  if args.command == "list-models":
     for model in ollama.list().models:
-      print(model.model)
+      if args.search in model.model:
+        print(model.model)
     return
 
   if args.version:
