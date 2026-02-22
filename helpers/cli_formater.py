@@ -15,6 +15,12 @@ supported_colors = {
     "cyan": 36,
     "white": 37,
 }
+
+def list_colors(search:str) -> None:
+  for color in supported_colors.keys():
+    if search in color:
+      print(color)
+
 def validate_colors(color):
     if color not in supported_colors.keys():
       raise ValueError(f"Unsupported color: {color}")
