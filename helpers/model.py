@@ -1,3 +1,4 @@
+import os
 import ollama
 
 from helpers.utils import read_json_file, write_json_file
@@ -62,3 +63,7 @@ def delete_role(role_name:str) -> None:
   
   del roles[role_name]
   write_json_file(roles, "store", "roles.json")
+
+def init_default_role():
+  if not os.path.exists("store/roles.json"):
+    write_json_file({"helpful-assistant" : "you are a helpful assistant"}, "store", "roles.json")
