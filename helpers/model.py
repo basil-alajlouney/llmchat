@@ -1,7 +1,7 @@
 import os
 import ollama
 
-from helpers.utils import read_json_file, write_json_file
+from helpers.utils import BASE_DIR, read_json_file, write_json_file
 
 def list_models(search:str):
   for model in ollama.list().models:
@@ -17,16 +17,16 @@ def add_message(lst:list, message:str, role:str) -> None:
   lst.append({"role":role, "content":message})
 
 def add_role(role_name:str, role_desc:str) -> None:
-  roles = read_json_file("store/roles.json")
+  roles = read_json_file(BASE_DIR + "/" + "store/roles.json")
 
   if role_name in roles.keys():
     raise ValueError(f"role already exists: {role_name}")
   
   roles[role_name] = role_desc
-  write_json_file(roles, "store", "roles.json")
+  write_json_file(roles, BASE_DIR + "/" + "store", "roles.json")
 
 def list_roles(search: str) -> None:
-  roles = read_json_file("store/roles.json")
+  roles = read_json_file(BASE_DIR + "/" + "store/roles.json")
 
   for role, desc in roles.items():
     if search != "":
@@ -47,23 +47,23 @@ def list_roles(search: str) -> None:
       print("Description:", desc)
 
 def update_role(role_name:str, role_desc:str) -> None:
-  roles = read_json_file("store/roles.json")
+  roles = read_json_file(BASE_DIR + "/" + "store/roles.json")
 
   if role_name not in roles.keys():
     raise ValueError(f"role doesn't exists: {role_name}")
   
   roles[role_name] = role_desc
-  write_json_file(roles, "store", "roles.json")
+  write_json_file(roles, BASE_DIR + "/" + "store", "roles.json")
 
 def delete_role(role_name:str) -> None:
-  roles = read_json_file("store/roles.json")
+  roles = read_json_file(BASE_DIR + "/" + "store/roles.json")
 
   if role_name not in roles.keys():
     raise ValueError(f"role doesn't exists: {role_name}")
   
   del roles[role_name]
-  write_json_file(roles, "store", "roles.json")
+  write_json_file(roles, BASE_DIR + "/" + "store", "roles.json")
 
 def init_default_role():
-  if not os.path.exists("store/roles.json"):
-    write_json_file({"helpful-assistant" : "you are a helpful assistant"}, "store", "roles.json")
+  if not os.path.exists(BASE_DIR + "/" + "store/roles.json"):
+    write_json_file({"helpful-assistant" : "you are a helpful assistant"}, BASE_DIR + "/" + "store", "roles.json")

@@ -4,7 +4,7 @@ from time import sleep
 
 import ollama
 from helpers.model import add_message
-from helpers.utils import read_json_file
+from helpers.utils import BASE_DIR, read_json_file
 
 
 supported_colors = {
@@ -82,8 +82,11 @@ def conversate(messages, model, color, quick_response, post_response_fn=None):
   print("Ending chat...")
 
 def init_messages(name):
-  chat_dir = os.path.join("store", "chats", name + ".json")
+  chat_dir = os.path.join("store", BASE_DIR + "/" + "chats", name + ".json")
   return read_json_file(chat_dir) if os.path.exists(chat_dir) else []
+
+def init_chat_dir():
+  os.mkdir(BASE_DIR + "/" + "store/chats")
 
 def list_chats(search:str):
     for chat in os.listdir("store/chats"):

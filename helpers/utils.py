@@ -28,3 +28,5 @@ def write_json_file(data: Dict[str, Any], directory: str, filename: str) -> None
     file_path = dir_path / filename
     with file_path.open("w", encoding="utf-8") as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
+
+BASE_DIR = "~/.local/share/llmchat"
