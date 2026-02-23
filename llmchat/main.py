@@ -22,11 +22,11 @@ def main():
   parser.add_argument("-qr", "--quick-response", action="store_true",default=False, help="discards sleep which is used to make responses more appealing")
   
   # Roles Flags
-  parser.add_argument("-ar", "--add-role", action="store_true",default=False, help="adds a new role to theBASE_DIR + "/" +  store")
-  parser.add_argument("-ur", "--update-role", action="store_true",default=False, help="updates a role in theBASE_DIR + "/" +  store")
-  parser.add_argument("-dr", "--delete-role", action="store_true",default=False, help="delete a role from theBASE_DIR + "/" +  store")
-  parser.add_argument("-r", "--role", default="helpful-assistant", help="delete a role from theBASE_DIR + "/" +  store")
-  parser.add_argument("-rd", "--role-desc", help="delete a role from theBASE_DIR + "/" +  store")
+  parser.add_argument("-ar", "--add-role", action="store_true",default=False, help="adds a new role to the store")
+  parser.add_argument("-ur", "--update-role", action="store_true",default=False, help="updates a role in the store")
+  parser.add_argument("-dr", "--delete-role", action="store_true",default=False, help="delete a role from the store")
+  parser.add_argument("-r", "--role", default="helpful-assistant", help="delete a role from the store")
+  parser.add_argument("-rd", "--role-desc", help="delete a role from the store")
   
   #Listing Flags
   parser.add_argument("-lc", "--list-colors", action="store_true",default=False, help="list all available colors")

@@ -86,7 +86,7 @@ def init_messages(name):
   return read_json_file(chat_dir) if os.path.exists(chat_dir) else []
 
 def init_chat_dir():
-  os.mkdir(BASE_DIR + "/" + "store/chats")
+  os.makedirs(BASE_DIR + "/" + "store/chats", exist_ok=True)
 
 def list_chats(search:str):
     for chat in os.listdir("store/chats"):
