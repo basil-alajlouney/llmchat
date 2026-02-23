@@ -17,4 +17,4 @@ dependencies = [
 llmchat = "llmchat.main:main"
 
 [tool.setuptools]
-packages = ["llmchat", "store", "helpers"]
+packages = ["llmchat", "helpers"]
