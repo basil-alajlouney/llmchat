@@ -19,25 +19,25 @@ def main():
   # Format Flags
   parser.add_argument("-c", "--color", type=str, default="green", help="pick wish color you want to you, check --list-colors for supported colors, default: green")
   parser.add_argument("-sys", "--system", type=str, help="system prompt for the model, default: You are a concise assistant")
-  parser.add_argument("-qr", "--quick-response", action=BASE_DIR + "/" + "store_true",default=False, help="discards sleep which is used to make responses more appealing")
+  parser.add_argument("-qr", "--quick-response", action="store_true",default=False, help="discards sleep which is used to make responses more appealing")
   
   # Roles Flags
-  parser.add_argument("-ar", "--add-role", action=BASE_DIR + "/" + "store_true",default=False, help="adds a new role to theBASE_DIR + "/" +  store")
-  parser.add_argument("-ur", "--update-role", action=BASE_DIR + "/" + "store_true",default=False, help="updates a role in theBASE_DIR + "/" +  store")
-  parser.add_argument("-dr", "--delete-role", action=BASE_DIR + "/" + "store_true",default=False, help="delete a role from theBASE_DIR + "/" +  store")
+  parser.add_argument("-ar", "--add-role", action="store_true",default=False, help="adds a new role to theBASE_DIR + "/" +  store")
+  parser.add_argument("-ur", "--update-role", action="store_true",default=False, help="updates a role in theBASE_DIR + "/" +  store")
+  parser.add_argument("-dr", "--delete-role", action="store_true",default=False, help="delete a role from theBASE_DIR + "/" +  store")
   parser.add_argument("-r", "--role", default="helpful-assistant", help="delete a role from theBASE_DIR + "/" +  store")
   parser.add_argument("-rd", "--role-desc", help="delete a role from theBASE_DIR + "/" +  store")
   
   #Listing Flags
-  parser.add_argument("-lc", "--list-colors", action=BASE_DIR + "/" + "store_true",default=False, help="list all available colors")
-  parser.add_argument("-lm", "--list-models", action=BASE_DIR + "/" + "store_true",default=False, help="list all available models")
-  parser.add_argument("-lr", "--list-roles", action=BASE_DIR + "/" + "store_true",default=False, help="list all available roles")
-  parser.add_argument("-lch", "--list-chats", action=BASE_DIR + "/" + "store_true",default=False, help="list all available roles")
+  parser.add_argument("-lc", "--list-colors", action="store_true",default=False, help="list all available colors")
+  parser.add_argument("-lm", "--list-models", action="store_true",default=False, help="list all available models")
+  parser.add_argument("-lr", "--list-roles", action="store_true",default=False, help="list all available roles")
+  parser.add_argument("-lch", "--list-chats", action="store_true",default=False, help="list all available roles")
 
   # Helper Flags
-  parser.add_argument("-v", "--verbose", action=BASE_DIR + "/" + "store_true", default=False, help="provide the version number")
-  parser.add_argument("--version", action=BASE_DIR + "/" + "store_true", default=False, help="provide the version number")
-  parser.add_argument("-s", "--search", action=BASE_DIR + "/" + "store_true", default="", help="search any given list")
+  parser.add_argument("-v", "--verbose", action="store_true", default=False, help="provide the version number")
+  parser.add_argument("--version", action="store_true", default=False, help="provide the version number")
+  parser.add_argument("-s", "--search", action="store_true", default="", help="search any given list")
 
   args = parser.parse_args()
   verbose_print = verbose_print_init(args.verbose)
