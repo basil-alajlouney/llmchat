@@ -4,4 +4,4 @@ build
 __pycache__
 __pycache__/**.*
 roles.json
-store/chats/*.*
+store/chats/**.*
