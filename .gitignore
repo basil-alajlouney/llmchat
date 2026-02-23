@@ -3,5 +3,5 @@ build
 .vscode
 __pycache__
 __pycache__/**.*
-store/roles.json
+roles.json
 store/chats/*.*
