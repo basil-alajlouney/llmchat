@@ -9,35 +9,98 @@ from helpers.utils import BASE_DIR, read_json_file, verbose_print_init, write_js
 
 def main():
 
-  # Parsers
-  parser = argparse.ArgumentParser(description="arguments for cmd-based chatbot")
+  parser = argparse.ArgumentParser(
+      prog="llmchat",
+      description="arguments for cmd-based chatbot"
+  )
 
-  # Model Flags
-  parser.add_argument("-m", "--model", type=str, default="llama3.1:latest", help="name the model you want to use, defualt: llama3.1:latest")
-  parser.add_argument("-n", "--name", type=str, default=datetime.now().strftime('%Y-%m-%d_%H-%M-%S'), help="name of the chat in the records, default would me the time")
-  
-  # Format Flags
-  parser.add_argument("-c", "--color", type=str, default="green", help="pick wish color you want to you, check --list-colors for supported colors, default: green")
-  parser.add_argument("-sys", "--system", type=str, help="system prompt for the model, default: You are a concise assistant")
-  parser.add_argument("-qr", "--quick-response", action="store_true",default=False, help="discards sleep which is used to make responses more appealing")
-  
-  # Roles Flags
-  parser.add_argument("-ar", "--add-role", action="store_true",default=False, help="adds a new role to the store")
-  parser.add_argument("-ur", "--update-role", action="store_true",default=False, help="updates a role in the store")
-  parser.add_argument("-dr", "--delete-role", action="store_true",default=False, help="delete a role from the store")
-  parser.add_argument("-r", "--role", default="helpful-assistant", help="delete a role from the store")
-  parser.add_argument("-rd", "--role-desc", help="delete a role from the store")
-  
-  #Listing Flags
-  parser.add_argument("-lc", "--list-colors", action="store_true",default=False, help="list all available colors")
-  parser.add_argument("-lm", "--list-models", action="store_true",default=False, help="list all available models")
-  parser.add_argument("-lr", "--list-roles", action="store_true",default=False, help="list all available roles")
-  parser.add_argument("-lch", "--list-chats", action="store_true",default=False, help="list all available roles")
+  # ── Session ────────────────────────────────────────────────
+  session = parser.add_argument_group("session")
+  session.add_argument("-m", "--model",
+      type=str,
+      default="llama3.1:latest",
+      help="model to use (default: llama3.1:latest)"
+  )
+  session.add_argument("-n", "--name",
+      type=str,
+      default=datetime.now().strftime('%Y-%m-%d_%H-%M-%S'),
+      help="chat session name (default: current timestamp)"
+  )
+  session.add_argument("-sys", "--system",
+      type=str,
+      default="You are a concise assistant",
+      help="system prompt for the model (default: \"You are a concise assistant\")"
+  )
+  session.add_argument("-qr", "--quick-response",
+      action="store_true",
+      help="skip output delay used for visual effects"
+  )
 
-  # Helper Flags
-  parser.add_argument("-v", "--verbose", action="store_true", default=False, help="provide the version number")
-  parser.add_argument("--version", action="store_true", default=False, help="provide the version number")
-  parser.add_argument("-s", "--search", action="store_true", default="", help="search any given list")
+  # ── Appearance ─────────────────────────────────────────────
+  appearance = parser.add_argument_group("appearance")
+  appearance.add_argument("-c", "--color",
+      type=str,
+      default="green",
+      help="output color (default: green) — see --list-colors"
+  )
+
+  # ── Roles ──────────────────────────────────────────────────
+  roles = parser.add_argument_group("roles")
+  roles.add_argument("-r", "--role",
+      type=str,
+      default="helpful-assistant",
+      help="select a roles (default: helpful-assistant)"
+  )
+  roles.add_argument("-rd", "--role-desc",
+      type=str,
+      help="role description — used with --add-role or --update-role"
+  )
+  roles.add_argument("-ar", "--add-role",
+      action="store_true",
+      help="add a new role (requires --role and --role-desc)"
+  )
+  roles.add_argument("-ur", "--update-role",
+      action="store_true",
+      help="update an existing role (requires --role and --role-desc)"
+  )
+  roles.add_argument("-dr", "--delete-role",
+      action="store_true",
+      help="delete a role from the store (requires --role)"
+  )
+
+  # ── Discovery ──────────────────────────────────────────────
+  discovery = parser.add_argument_group("discovery")
+  discovery.add_argument("-lm", "--list-models",
+      action="store_true",
+      help="list available models"
+  )
+  discovery.add_argument("-lr", "--list-roles",
+      action="store_true",
+      help="list saved roles"
+  )
+  discovery.add_argument("-lch", "--list-chats",
+      action="store_true",
+      help="list saved chats"
+  )
+  discovery.add_argument("-lc", "--list-colors",
+      action="store_true",
+      help="list supported colors"
+  )
+  discovery.add_argument("-s", "--search",
+      action="store_true",
+      help="search within any list"
+  )
+
+  # ── Meta ───────────────────────────────────────────────────
+  meta = parser.add_argument_group("meta")
+  meta.add_argument("-v", "--verbose",
+      action="store_true",
+      help="enable verbose output"
+  )
+  meta.add_argument("--version",
+      action="version",
+      version="%(prog)s 1.0.0"
+  )
 
   args = parser.parse_args()
   verbose_print = verbose_print_init(args.verbose)
