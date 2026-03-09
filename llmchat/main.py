@@ -1,11 +1,14 @@
 from datetime import datetime
+import os
+
+from dotenv import load_dotenv
 from helpers.model import add_message, add_role, delete_role, init_default_role, list_models, list_roles, update_role, validate_model
-from helpers.cli_formater import conversate, init_chat_dir, list_chats, list_colors, init_messages, validate_colors
+from helpers.cli_formater import conversate, init_chat_dir, list_history, list_colors, init_messages, validate_colors
 
 import argparse
 import importlib.metadata
 
-from helpers.utils import BASE_DIR, read_json_file, verbose_print_init, write_json_file
+from helpers.utils import Config, read_json_file, verbose_print_init, write_json_file
 
 def main():
 
@@ -78,7 +81,7 @@ def main():
       action="store_true",
       help="list saved roles"
   )
-  discovery.add_argument("-lch", "--list-chats",
+  discovery.add_argument("-lh", "--list-history",
       action="store_true",
       help="list saved chats"
   )
@@ -118,8 +121,8 @@ def main():
     list_roles(args.search)
     return
 
-  if args.list_chats:
-    list_chats(args.search)
+  if args.list_history:
+    list_history(args.search)
     return
 
   # Roles Conditionals
@@ -135,27 +138,25 @@ def main():
     delete_role(args.role)
     return
 
-  if args.version:
-    print(importlib.metadata.version("llmchat"))
-    return
-
   # Session initilization
+  load_dotenv()
+  Config.BASE_DIR = os.environ.get("BASE_DIR", "~/.local/share/llmchat")
   validate_colors(args.color)
   validate_model(args.model)
   init_default_role()
   init_chat_dir()
 
   # Preparing the chat
-  post_response_fn = lambda : write_json_file(messages, BASE_DIR + "/" + "store/chats", args.name + ".json")
+  post_response_fn = lambda : write_json_file(messages, Config.BASE_DIR + "/" + "store/chats", args.name + ".json")
   messages = init_messages(args.name)
-  system = args.system if args.system else read_json_file(BASE_DIR + "/" + "store/roles.json")[args.role]
+  system = args.system if args.system else read_json_file(Config.BASE_DIR + "/" + "store/roles.json")[args.role]
 
   # Updating role or Initilizing the chat
   if len(messages) == 0:
     add_message(messages, system, "system")
   else:
     system_messages = messages[0]["content"]
-    args.role = next((k for k, v in read_json_file(BASE_DIR + "/" + "store/roles.json").items() if v == system_messages), None)
+    args.role = next((k for k, v in read_json_file(Config.BASE_DIR + "/" + "store/roles.json").items() if v == system_messages), None)
 
   verbose_print("model:", args.model)
   verbose_print("role:", args.role)

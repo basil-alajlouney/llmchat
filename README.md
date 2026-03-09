@@ -1,66 +1,102 @@
 # LLMChat CLI
 
-A simple command-line interface (CLI) to chat with **Ollama** models, with customizable options for colors, model selection, and system prompts.
-
-## Features
-
-- Chat with Ollama LLMs directly from your terminal.  
-- Customize text color for outputs.  
-- Select different models available in Ollama.  
-- Set custom system prompts for context-aware responses.  
-- Lightweight and easy to install.
+A simple command-line interface to chat with **Ollama** models, with support for roles, chat history, custom system prompts, and color output.
 
 ## Installation
 
-Install directly from GitHub:
-
 ```bash
 pip install git+https://github.com/basil-alajlouney/llmchat
-````
+```
 
-> Requires Python 3.10+ and pip.
+> Requires Python 3.10+ and a running [Ollama](https://ollama.com) instance.
+
+## Quick Start
+
+```bash
+# Start a chat with defaults
+llmchat
+
+# Use a specific model with a custom system prompt
+llmchat -m llama3.1 -sys "You are a senior Python engineer."
+
+# Resume a previous chat session
+llmchat -n my-session
+```
 
 ## Usage
 
-Run the CLI:
-
-```bash
-llmchat
+```
+llmchat [options]
 ```
 
-Optional arguments:
+### Session
+
+| Flag | Default | Description |
+|---|---|---|
+| `-m`, `--model` | `llama3.1:latest` | Model to use |
+| `-n`, `--name` | current timestamp | Chat session name (used to resume history) |
+| `-sys`, `--system` | `You are a concise assistant` | System prompt for the model |
+| `-qr`, `--quick-response` | — | Skip output delay used for visual effects |
+
+### Appearance
+
+| Flag | Default | Description |
+|---|---|---|
+| `-c`, `--color` | `green` | Output text color — see `--list-colors` |
+
+### Roles
+
+| Flag | Description |
+|---|---|
+| `-r`, `--role` | Select a role from the store (default: `helpful-assistant`) |
+| `-rd`, `--role-desc` | Role description — used with `--add-role` or `--update-role` |
+| `-ar`, `--add-role` | Add a new role (requires `--role` and `--role-desc`) |
+| `-ur`, `--update-role` | Update an existing role (requires `--role` and `--role-desc`) |
+| `-dr`, `--delete-role` | Delete a role from the store (requires `--role`) |
+
+### Discovery
+
+| Flag | Description |
+|---|---|
+| `-lm`, `--list-models` | List available Ollama models |
+| `-lr`, `--list-roles` | List saved roles |
+| `-lh`, `--list-history` | List saved chat sessions |
+| `-lc`, `--list-colors` | List supported output colors |
+| `-s`, `--search` | Search within any list |
+
+### Meta
+
+| Flag | Description |
+|---|---|
+| `-v`, `--verbose` | Enable verbose output |
+| `--version` | Show version number |
+
+## Examples
 
 ```bash
-llmchat -m llama3.1 -s "You are a helpful assistant." -c green -qs
-```
+# Add a role
+llmchat -ar -r devops -rd "You are a senior DevOps engineer specializing in Kubernetes."
 
-* `-m` / `--model` : Choose the Ollama model (e.g., `llama3.1`).
-* `-s` / `--system-prompt` : Provide a system prompt for context.
-* `-c` / `--color` : Set the color of the output text (e.g., `red`, `green`, `blue`).
+# Start a session using that role
+llmchat -r devops -n k8s-help
 
-### Example
+# Resume the session later
+llmchat -n k8s-help
 
-```bash
-llmchat -m llama3.1 -s "You are a concise assistant." -c cyan
-> Hello, how do transformers work?
-[cyan]Transformers use self-attention to model relationships between tokens in a sequence.[/cyan]
+# List all saved chats and search through them
+llmchat -lh -s
 ```
 
 ## Requirements
 
-* Python 3.10+
-* [Ollama Python library](https://pypi.org/project/ollama/)
+- Python 3.10+
+- [Ollama](https://ollama.com) running locally
+- [ollama-python](https://pypi.org/project/ollama/) library
 
 ## Contributing
 
-Open issues or submit pull requests to improve the CLI functionality.
+Open issues or submit pull requests on [GitHub](https://github.com/basil-alajlouney/llmchat).
 
 ## License
 
 MIT License
-
-```
-This is fully self-contained — everything a user needs to know is in **one file**, no extra split sections.  
-
-If you want, I can also **add a small “quick start” snippet at the top** so users can literally copy-paste and chat in 2 commands. Do you want me to do that?
-```

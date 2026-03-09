@@ -5,3 +5,4 @@ __pycache__
 __pycache__/**.*
 store/roles.json
 store/chats/**.*
+.env
