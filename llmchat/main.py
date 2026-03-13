@@ -110,7 +110,7 @@ def main():
 
   # Session initilization
   load_dotenv()
-  Config.BASE_DIR = os.environ.get("BASE_DIR", "~/.local/share/llmchat")
+  Config.BASE_DIR = os.environ.get("BASE_DIR", os.path.expanduser("~") + "/.local/share/llmchat")
   init_default_role()
   init_chat_dir()
 
