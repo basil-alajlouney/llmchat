@@ -90,8 +90,8 @@ def main():
       help="list supported colors"
   )
   discovery.add_argument("-s", "--search",
-      action="store_true",
-      help="search within any list"
+      help="search within any list",
+      default=""
   )
 
   # ── Meta ───────────────────────────────────────────────────
@@ -107,6 +107,12 @@ def main():
 
   args = parser.parse_args()
   verbose_print = verbose_print_init(args.verbose)
+
+  # Session initilization
+  load_dotenv()
+  Config.BASE_DIR = os.environ.get("BASE_DIR", "~/.local/share/llmchat")
+  init_default_role()
+  init_chat_dir()
 
   # Listing Conditionals
   if args.list_colors:
@@ -138,13 +144,9 @@ def main():
     delete_role(args.role)
     return
 
-  # Session initilization
-  load_dotenv()
-  Config.BASE_DIR = os.environ.get("BASE_DIR", "~/.local/share/llmchat")
+# Session Validation
   validate_colors(args.color)
   validate_model(args.model)
-  init_default_role()
-  init_chat_dir()
 
   # Preparing the chat
   post_response_fn = lambda : write_json_file(messages, Config.BASE_DIR + "/" + "store/history", args.name + ".json")
