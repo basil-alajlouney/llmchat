@@ -147,7 +147,7 @@ def main():
   init_chat_dir()
 
   # Preparing the chat
-  post_response_fn = lambda : write_json_file(messages, Config.BASE_DIR + "/" + "store/chats", args.name + ".json")
+  post_response_fn = lambda : write_json_file(messages, Config.BASE_DIR + "/" + "store/history", args.name + ".json")
   messages = init_messages(args.name)
   system = args.system if args.system else read_json_file(Config.BASE_DIR + "/" + "store/roles.json")[args.role]
 

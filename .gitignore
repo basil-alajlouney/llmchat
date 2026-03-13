@@ -2,7 +2,6 @@ llmchat.egg-info
 build
 .vscode
 __pycache__
-__pycache__/**.*
-store/roles.json
-store/chats/**.*
+__pycache__/**
+store/**
 .env

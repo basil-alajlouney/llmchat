@@ -86,7 +86,7 @@ def init_messages(name):
   return read_json_file(chat_dir) if os.path.exists(chat_dir) else []
 
 def init_chat_dir():
-  os.makedirs(Config.BASE_DIR + "/" + "store/histry", exist_ok=True)
+  os.makedirs(Config.BASE_DIR + "/" + "store/history", exist_ok=True)
 
 def list_history(search:str):
     for chat in os.listdir("store/history"):
