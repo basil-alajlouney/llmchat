@@ -149,16 +149,16 @@ def main():
   validate_model(args.model)
 
   # Preparing the chat
-  post_response_fn = lambda : write_json_file(messages, Config.BASE_DIR + "/" + "store/history", args.name + ".json")
+  post_response_fn = lambda : write_json_file(messages, os.path.join(Config.BASE_DIR, "store", "history"), args.name + ".json")
   messages = init_messages(args.name)
-  system = args.system if args.system else read_json_file(Config.BASE_DIR + "/" + "store/roles.json")[args.role]
+  system = args.system if args.system else read_json_file(os.path.join(Config.BASE_DIR, "store", "roles.json"))[args.role]
 
   # Updating role or Initilizing the chat
   if len(messages) == 0:
     add_message(messages, system, "system")
   else:
     system_messages = messages[0]["content"]
-    args.role = next((k for k, v in read_json_file(Config.BASE_DIR + "/" + "store/roles.json").items() if v == system_messages), None)
+    args.role = next((k for k, v in read_json_file(os.path.join(Config.BASE_DIR, "store", "roles.json")).items() if v == system_messages), None)
 
   verbose_print("model:", args.model)
   verbose_print("role:", args.role)

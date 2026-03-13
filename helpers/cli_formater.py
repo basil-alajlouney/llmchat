@@ -82,13 +82,13 @@ def conversate(messages, model, color, quick_response, post_response_fn=None):
   print("Ending chat...")
 
 def init_messages(name):
-  chat_dir = os.path.join("store", Config.BASE_DIR + "/" + "history", name + ".json")
+  chat_dir = os.path.join(Config.BASE_DIR, "store", "history", name + ".json")
   return read_json_file(chat_dir) if os.path.exists(chat_dir) else []
 
 def init_chat_dir():
-  os.makedirs(Config.BASE_DIR + "/" + "store/history", exist_ok=True)
+  os.makedirs(os.path.join(Config.BASE_DIR, "store", "history"), exist_ok=True)
 
 def list_history(search:str):
-    for chat in os.listdir("store/history"):
+    for chat in os.listdir(os.path.join(Config.BASE_DIR, "store", "history")):
       if search in chat[:-5]:
         print(chat[:-5])
