@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Any, Dict
 
 def verbose_print_init(verbose):
-  return lambda *values: print(*values) if verbose else None
+    return lambda *values: print(*values) if verbose else None
 
 def read_json_file(file_path: str) -> Dict[str, Any]:
     """
