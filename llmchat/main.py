@@ -7,7 +7,6 @@ from helpers.cli import LLMChatParser, CliFormatter
 from helpers.utils import Config, invoke_fn_by_dict
 
 def main():
-    
     arg_parser = LLMChatParser()
     args = arg_parser.parse()
 
