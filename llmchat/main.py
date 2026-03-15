@@ -65,9 +65,9 @@ def main():
 
     # Updating role or Initilizing the chat
     if args.verbose:
-        print("model:", args.model)
-        print("role:", args.role)
-        print("chat title:", args.name)
+        print("model:", llm.model_name)
+        print("role:", llm.role)
+        print("chat title:", llm.conversation_title)
 
     llm.conversate(store_messages=True)
 
