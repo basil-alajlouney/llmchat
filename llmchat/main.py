@@ -13,8 +13,7 @@ def main():
 
     # Session initilization
     load_dotenv()
-    config = Config()
-    config.setup(os.environ.get("BASE_DIR", os.path.expanduser("~") + "/.local/share/llmchat"))
+    Config.setup(os.environ.get("BASE_DIR", os.path.expanduser("~") + "/.local/share/llmchat"))
     Roles.init_default_role()
 
 
@@ -26,11 +25,11 @@ def main():
 
     invoke_fn_by_dict(args, [
         Roles.list_roles
-    ], args=(config.ROLES_DIR, args.search), exit=True)
+    ], args=(Config.ROLES_DIR, args.search), exit=True)
 
     invoke_fn_by_dict(args, [
         Model.list_history,
-    ], args=(config.HISTORY_DIR, args.search), exit=True)
+    ], args=(Config.HISTORY_DIR, args.search), exit=True)
 
     # Roles Conditionals
     invoke_fn_by_dict(args, [
@@ -57,8 +56,8 @@ def main():
         args.model,
         args.name,
         system_prompt,
-        Roles.get_role_by_desc(config.ROLES_DIR, system_prompt),
-        config.HISTORY_DIR,
+        Roles.get_role_by_desc(Config.ROLES_DIR, system_prompt),
+        Config.HISTORY_DIR,
         color=args.color,
         quick_response=args.quick_response
     )
