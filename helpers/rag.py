@@ -1,4 +1,3 @@
-
 """
 1 - storing:
   * add document (file path / raw text)

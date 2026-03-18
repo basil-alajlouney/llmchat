@@ -3,7 +3,7 @@ import ollama
 from datetime import datetime
 
 from helpers.cli import CliFormatter
-from helpers.utils import Config, read_json_file, write_json_file
+from helpers.utils import read_json_file, read_md_file, write_json_file, write_md_file
 
 class Model:
 	def __init__(self, model_name, conversation_title=None, system_prompt=None, role=None, history_dir=None, color="green", quick_response=False):
@@ -83,67 +83,68 @@ class Model:
 
 class Roles:
     # the *_, **__ are used for compatability with invoking functions for cleaner code
-	def __init__(self, roles_dir):
-		self.roles = read_json_file(roles_dir)
 
-	def __getitem__(self, role):
-		return self.roles[role]
+	def get_role(role_name, directory):
+		return os.path.join(directory, role_name)
 
 	@staticmethod
 	def add_role(role_name:str, role_desc:str, directory, *_, **__) -> None:
-		roles = read_json_file(directory)
-
-		if role_name in roles.keys():
+    
+		if role_name.replace(" ", "_") in os.listdir(directory):
 			raise ValueError(f"role already exists: {role_name}")
 
-		roles[role_name] = role_desc
-		write_json_file(roles, directory)
+		file_dir = os.path.join(directory, role_name.replace(" ", "_"))
+
+		write_md_file(file_dir, role_desc)
     
 	@staticmethod
 	def list_roles(directory, search:str="") -> None:
-		roles = read_json_file(directory)
+		search = search.replace(" ", "_")
 
-		for role, desc in roles.items():
-			if search != "":
+		for role in os.listdir(directory):
+			role_desc = read_md_file(os.path.join(directory, role))
+
+			if search == "":
+				print("All Roles Availble:")
+			else:
 				print("Roles titles that match your search:")
-		
-		if search in role:
-			print("=" * 20)
-			print("Role title:", role)
-			print("Description:", desc)
 
-		if search != "":
-			print("=" * 40, end="\n\n")
-			print("Roles description that match your search:")
-
-		if search in desc and search != "":
-			print("=" * 20)
-			print("Role title:", role)
-			print("Description:", desc)
+			if search in role or search in role_desc:
+				print("Role title:", role)
+				print("Description:", role_desc)
+				print("=" * 20, end="\n")
 
 	@staticmethod
-	def get_role_by_desc(directory:str, system_prompt:str):
-		return next((k for k, v in read_json_file(directory).items() if v == system_prompt), None)
+	def get_role_by_desc(system_prompt:str, directory:str):
+		for role in os.listdir(directory):
+			role_desc = read_md_file(os.path.join(directory, role))
+
+			if system_prompt == role_desc:
+				return role
 
 	@staticmethod
 	def update_role(role_name:str, role_desc:str, directory) -> None:
-		roles = read_json_file(directory)
+		assert role_name.replace(" ", "_") in os.listdir(directory), ValueError(f"role doesn't exists: {role_name}")
 
-		assert role_name not in roles.keys(), ValueError(f"role doesn't exists: {role_name}")
+		file_dir = os.path.join(directory, role_name.replace(" ", "_"))
 
-		roles[role_name] = role_desc
-		write_json_file(roles, directory)
+		write_md_file(file_dir, role_desc)
 
-	@staticmethod
-	def delete_role(role_name:str, *_, **__) -> None:
-		roles = read_json_file(os.path.join(Config.BASE_DIR, "store", "roles.json"))
-
-		assert role_name not in roles.keys(), ValueError(f"role doesn't exists: {role_name}")
-
-		del roles[role_name]
-		write_json_file(roles, Config.ROLES_DIR)
 
 	@staticmethod
-	def init_default_role():
-		if not os.path.exists(os.path.join(Config.BASE_DIR, "store", "roles.json")):
-			write_json_file({"helpful-assistant" : "you are a helpful assistant"}, Config.ROLES_DIR)
+	def delete_role(role_name:str, directory, *_, **__) -> None:
+		assert role_name.replace(" ", "_") in os.lidtdir(directory), ValueError(f"role doesn't exists: {role_name}")
+		os.remove(os.path.join(directory, role_name + ".md"))
+
+	@staticmethod
+	def init_default_role(directory):
+		directory = os.path.join(directory, "helpful-assistant")
+		base_role = """# System Prompt
+
+You are a helpful and concise assistant.
+
+- Provide clear, accurate, and relevant answers.
+- Ask for clarification if the question is ambiguous.
+- Keep responses focused and easy to understand."""
+		if not os.path.exists(directory):
+			write_md_file(base_role, directory)

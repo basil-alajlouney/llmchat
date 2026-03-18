@@ -72,7 +72,8 @@ class LLMChatParser:
         group = self.parser.add_argument_group("session")
         group.add_argument("-m", "--model",
             type=str,
-            default="llama3.1:latest",
+            # default="llama3.1:latest",
+            default="granite3.1-moe:1b",
             help="model to use (default: llama3.1:latest)"
         )
         group.add_argument("-n", "--name",

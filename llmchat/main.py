@@ -13,7 +13,7 @@ def main():
     # Session initilization
     load_dotenv()
     Config.setup(os.environ.get("BASE_DIR", os.path.expanduser("~") + "/.local/share/llmchat"))
-    Roles.init_default_role()
+    Roles.init_default_role(Config.ROLES_DIR)
 
 
     # Listing Conditionals
@@ -55,7 +55,7 @@ def main():
         args.model,
         args.name,
         system_prompt,
-        Roles.get_role_by_desc(Config.ROLES_DIR, system_prompt),
+        Roles.get_role_by_desc(system_prompt, Config.ROLES_DIR),
         Config.HISTORY_DIR,
         color=args.color,
         quick_response=args.quick_response
