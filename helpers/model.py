@@ -20,10 +20,11 @@ class Model:
 		if len(self.history) == 0:
 			self.add_message(self.system_prompt, "system")
 
-	def add_message(self, message:str, role:str, store_message=False) -> None:
+	def add_message(self, message:str, role:str, relevant_chunks=[], store_message=False) -> None:
 		assert role in ["system", "assistant", "user"], ValueError("Role doesn't exist")
 
-		self.history.append({"role":role, "content":message})
+		data = {"role":role, "content":message, "relevant_chunks" : relevant_chunks}
+		self.history.append(data)
 		if store_message:
 			write_json_file(self.history, self.history_dir)
 
